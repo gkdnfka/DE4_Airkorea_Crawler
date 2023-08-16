@@ -9,6 +9,7 @@ confluent-kafka = "*"
 python-dotenv = "*"
 pyarrow = "*"
 requests = "*"
+fire = "*"
 
 [dev-packages]
 

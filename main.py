@@ -1,6 +1,6 @@
 import json
-import os
 
+import fire
 import dotenv
 import pyarrow as pa
 
@@ -9,7 +9,16 @@ from airkorea_api import request_airkorea_api, parse_airdata
 from utils import get_datalake_bucket_name, get_datalake_raw_layer_path
 from kafka import send_stream
 
-def run_extract(mode="batch"):
+
+def run_extract(mode):
+    """
+    airkorea REST API를 활용해 대기질 정보 수집.
+    batch mode: 대상 스토리지(S3)에 저장.
+    streaming mode: kafka로 전송.
+
+    :param mode: 'batch' | 'streaming'
+    :return: None
+    """
     dotenv.load_dotenv()
     response = request_airkorea_api(
         station_name="마포구",
@@ -60,4 +69,6 @@ def run_extract(mode="batch"):
 
 
 if __name__ == '__main__':
-    run_extract(mode="batch")
+    fire.Fire({
+        "extract": run_extract
+    })
